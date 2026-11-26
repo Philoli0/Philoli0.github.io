@@ -31,6 +31,10 @@ jobs:
             echo "c7789f3955879dfdf95129ba4f9cf773c2f99e1ab9c59f80244f0b736d60883a  $RUNNER_TEMP/qingru-site.zip" | sha256sum --check
             unzip -q "$RUNNER_TEMP/qingru-site.zip" -d "$RUNNER_TEMP/qingru-unpacked"
             cp -a "$RUNNER_TEMP/qingru-unpacked/清如AI/." "$RUNNER_TEMP/qingru-site/"
+            if [[ -f qingru-ui-overlay.zip ]]; then
+              echo "5e2ac8d6f8718f46b46728dc0f4c0f6535641301fbca467521b2c5a415f8940a  qingru-ui-overlay.zip" | sha256sum --check
+              unzip -oq qingru-ui-overlay.zip -d "$RUNNER_TEMP/qingru-site"
+            fi
           fi
           test -f "$RUNNER_TEMP/qingru-site/index.html"
           test -f "$RUNNER_TEMP/qingru-site/classroom.html"
