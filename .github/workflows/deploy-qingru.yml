@@ -1,0 +1,42 @@
+name: Deploy Qingru classroom
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Prepare verified website
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/qingru-site"
+          if [[ -f index.html ]]; then
+            rsync -a --exclude='.git' --exclude='.github' --exclude='qingru-site.zip.part-*' ./ "$RUNNER_TEMP/qingru-site/"
+          else
+            cat qingru-site.zip.part-* > "$RUNNER_TEMP/qingru-site.zip"
+            echo "c7789f3955879dfdf95129ba4f9cf773c2f99e1ab9c59f80244f0b736d60883a  $RUNNER_TEMP/qingru-site.zip" | sha256sum --check
+            unzip -q "$RUNNER_TEMP/qingru-site.zip" -d "$RUNNER_TEMP/qingru-unpacked"
+            cp -a "$RUNNER_TEMP/qingru-unpacked/清如AI/." "$RUNNER_TEMP/qingru-site/"
+          fi
+          test -f "$RUNNER_TEMP/qingru-site/index.html"
+          test -f "$RUNNER_TEMP/qingru-site/classroom.html"
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/qingru-site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
