@@ -33,15 +33,15 @@ jobs:
             echo "c7789f3955879dfdf95129ba4f9cf773c2f99e1ab9c59f80244f0b736d60883a  $RUNNER_TEMP/qingru-site.zip" | sha256sum --check
             unzip -q "$RUNNER_TEMP/qingru-site.zip" -d "$RUNNER_TEMP/qingru-unpacked"
             cp -a "$RUNNER_TEMP/qingru-unpacked/清如AI/." "$RUNNER_TEMP/qingru-site/"
-            if [[ -f qingru-orbit.zip ]]; then
-              echo "2c2e64ee5538d550ca624f534e016df3538920a2c70a9d97d3d2d78efd49086a  qingru-orbit.zip" | sha256sum --check
-              unzip -oq qingru-orbit.zip -d "$RUNNER_TEMP/qingru-site"
+            if [[ -f qingru-colourstage.zip ]]; then
+              echo "22293cf0ef54090fc0ed9ce8dbf4e0552555fb7ee9b1fd7629ecbbabfdba75ef  qingru-colourstage.zip" | sha256sum --check
+              unzip -oq qingru-colourstage.zip -d "$RUNNER_TEMP/qingru-site"
             fi
           fi
           test -f "$RUNNER_TEMP/qingru-site/index.html"
           test -f "$RUNNER_TEMP/qingru-site/classroom.html"
           for entry in "$RUNNER_TEMP/qingru-site/"*.html; do
-            sed -i -E 's@(qingru\.css|classroom\.css|site-runtime\.js|classroom-runtime\.js|research-runtime\.js|report-reader\.css|report-reader\.mjs|assets/fonts/qingru-sans-ui\.woff2)(\?[^" ]*)?"@\1?v=${{ github.sha }}"@g' "$entry"
+            sed -i -E 's@(qingru\.css|classroom\.css|site-runtime\.js|classroom-runtime\.js|research-runtime\.js|report-reader\.css|report-reader\.mjs|assets/fonts/qingru-sans-ui\.woff2|assets/research/[a-z-]+\.png|reports/qingru-research-(report|reading)\.(pdf|docx))(\?[^" ]*)?"@\1?v=${{ github.sha }}"@g' "$entry"
           done
           for sheet in "$RUNNER_TEMP/qingru-site/qingru.css" "$RUNNER_TEMP/qingru-site/classroom.css"; do
             sed -i -E 's@(assets/fonts/qingru-sans-(ui|reading)\.woff2)(\?[^" ]*)?"@\1?v=${{ github.sha }}"@g' "$sheet"
