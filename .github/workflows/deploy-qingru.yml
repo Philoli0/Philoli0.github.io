@@ -40,6 +40,9 @@ jobs:
           fi
           test -f "$RUNNER_TEMP/qingru-site/index.html"
           test -f "$RUNNER_TEMP/qingru-site/classroom.html"
+          for entry in "$RUNNER_TEMP/qingru-site/"*.html; do
+            sed -i -E 's@(qingru\.css|classroom\.css|site-runtime\.js|classroom-runtime\.js)(\?[^" ]*)?"@\1?v=${{ github.sha }}"@g' "$entry"
+          done
       - uses: actions/upload-pages-artifact@v4
         with:
           name: ${{ steps.meta.outputs.name }}
