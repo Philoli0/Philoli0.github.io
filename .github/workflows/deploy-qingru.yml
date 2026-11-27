@@ -33,9 +33,9 @@ jobs:
             echo "c7789f3955879dfdf95129ba4f9cf773c2f99e1ab9c59f80244f0b736d60883a  $RUNNER_TEMP/qingru-site.zip" | sha256sum --check
             unzip -q "$RUNNER_TEMP/qingru-site.zip" -d "$RUNNER_TEMP/qingru-unpacked"
             cp -a "$RUNNER_TEMP/qingru-unpacked/清如AI/." "$RUNNER_TEMP/qingru-site/"
-            if [[ -f qingru-motion-ring.zip ]]; then
-              echo "8280861b6cdec57534c3e0bff1cd2f9d5d0bd2ceb0dedfa1385b6f5e2d683f75  qingru-motion-ring.zip" | sha256sum --check
-              unzip -oq qingru-motion-ring.zip -d "$RUNNER_TEMP/qingru-site"
+            if [[ -f qingru-scene.zip ]]; then
+              echo "47e1003058bd3d77e7c9c5042738da3cf857f0d7414302f863a9c233e449eced  qingru-scene.zip" | sha256sum --check
+              unzip -oq qingru-scene.zip -d "$RUNNER_TEMP/qingru-site"
             fi
           fi
           test -f "$RUNNER_TEMP/qingru-site/index.html"
