@@ -38,6 +38,10 @@ jobs:
               unzip -oq qingru-arcstage.zip -d "$RUNNER_TEMP/qingru-site"
             fi
           fi
+          echo "c5efef9c825014442f80c7c2313e2aca02a0a44f0a055605bf7f7119a261aec9  qingru-themes.zip.b64" | sha256sum --check
+          base64 --decode qingru-themes.zip.b64 > "$RUNNER_TEMP/qingru-theme-delta.zip"
+          echo "aa93fa662a7a8ab2affef3b0c8822b76a6ca79933b974d9dd86efda282a27ade  $RUNNER_TEMP/qingru-theme-delta.zip" | sha256sum --check
+          unzip -oq "$RUNNER_TEMP/qingru-theme-delta.zip" -d "$RUNNER_TEMP/qingru-site"
           test -f "$RUNNER_TEMP/qingru-site/index.html"
           test -f "$RUNNER_TEMP/qingru-site/classroom.html"
           for entry in "$RUNNER_TEMP/qingru-site/"*.html; do
@@ -62,3 +66,4 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: ${{ needs.build.outputs.artifact_name }}
+
