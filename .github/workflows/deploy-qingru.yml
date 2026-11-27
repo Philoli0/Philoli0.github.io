@@ -33,15 +33,11 @@ jobs:
             echo "c7789f3955879dfdf95129ba4f9cf773c2f99e1ab9c59f80244f0b736d60883a  $RUNNER_TEMP/qingru-site.zip" | sha256sum --check
             unzip -q "$RUNNER_TEMP/qingru-site.zip" -d "$RUNNER_TEMP/qingru-unpacked"
             cp -a "$RUNNER_TEMP/qingru-unpacked/清如AI/." "$RUNNER_TEMP/qingru-site/"
-            if [[ -f qingru-arcstage.zip ]]; then
-              echo "56b0650c86421e0121c18510fa5ba3d1da90dce397988b9599b354f80dc29737  qingru-arcstage.zip" | sha256sum --check
-              unzip -oq qingru-arcstage.zip -d "$RUNNER_TEMP/qingru-site"
+            if [[ -f qingru-motion-ring.zip ]]; then
+              echo "8280861b6cdec57534c3e0bff1cd2f9d5d0bd2ceb0dedfa1385b6f5e2d683f75  qingru-motion-ring.zip" | sha256sum --check
+              unzip -oq qingru-motion-ring.zip -d "$RUNNER_TEMP/qingru-site"
             fi
           fi
-          echo "6ff23a799b52645f5657971d5d48bc53b32a2f633111d76ac7db59a2e9364ae5  qingru-identity.zip.b64" | sha256sum --check
-          base64 --decode qingru-identity.zip.b64 > "$RUNNER_TEMP/qingru-theme-delta.zip"
-          echo "25cb8304cc73d172effa57584bf58e5bdd3f0d818618865a250cdd83f504dd8c  $RUNNER_TEMP/qingru-theme-delta.zip" | sha256sum --check
-          unzip -oq "$RUNNER_TEMP/qingru-theme-delta.zip" -d "$RUNNER_TEMP/qingru-site"
           test -f "$RUNNER_TEMP/qingru-site/index.html"
           test -f "$RUNNER_TEMP/qingru-site/classroom.html"
           for entry in "$RUNNER_TEMP/qingru-site/"*.html; do
@@ -66,4 +62,3 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: ${{ needs.build.outputs.artifact_name }}
-
